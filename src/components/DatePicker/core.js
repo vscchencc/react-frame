@@ -11,12 +11,28 @@ class DatePickerCore {
             date: d.getDate(),
             hours: d.getHours(),
             minutes: d.getMinutes(),
-            seconds: d.getSeconds()
+            seconds: d.getSeconds(),
+            lang: 'zh_cn'
         }
 
         // 不确定时间规则
         this.ranges = {
             months: [31,false,31,30,31,30,31,31,30,31,30,31]
+        }
+
+        this.lang = {}
+        // 多语言设置
+        this.lang['zh_cn'] = {
+            weeks: ['日', '一', '二', '三', '四', '五', '六'],
+            months: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+            year: '年',
+            date: '日期',
+            time: '时间',
+            hours: '小时',
+            minutes: '分钟',
+            confirm: '确定',
+            cancel: '取消',
+            close: '关闭'
         }
     }
 

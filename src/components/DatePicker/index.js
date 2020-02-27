@@ -35,12 +35,22 @@ class DatePicker extends Component {
                 minutes: info
             });
         })
-        console.log(datepicker)
+        this.setState({
+            data: data,
+            year: datepicker.data.year,
+            month: datepicker.data.month,
+            date: datepicker.data.date,
+            hours: datepicker.data.hours,
+            minutes: datepicker.data.minutes,
+            datetime: datepicker.data.year+''+datepicker.data.month+''+datepicker.data.date,
+            weeks_list: datepicker.lang[datepicker.data.lang].weeks
+        })
     }
     componentDidMount () {
         this.init()
     }
     render () {
+        console.log(this.state)
         return (
             <div className="datepicker-wrapper">
                 <div className="datepicker-header">
