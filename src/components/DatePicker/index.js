@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
 import './style.scss'
 import DatePickerCore from "./core";
+import DateHeader from './dateHeader'
+import YearPanel from './yearPanel'
 import DatePanel from './datePanel.js'
+import MonthPanel from './monthPanel'
 
 const datepicker = new DatePickerCore()
 
@@ -11,10 +14,10 @@ class DatePicker extends Component {
     this.state = {
       min: this.props.min || '1900/01/01',
       max: this.props.max,
-      start: this.props.start,
-      isTime: this.props.isTime
+      start: this.props.start
     }
     this.init = this.init.bind(this)
+    this.selectYear = this.selectYear.bind(this)
   }
   componentDidMount () {
     this.init()
@@ -23,29 +26,15 @@ class DatePicker extends Component {
     return (
       <div className="datepicker-wrapper">
         <div className="datepicker-header">
-          <span className="header-icon">&lt;</span>
-          <span className="header-icon">&lt;&lt;</span>
-          <span>2019年3月</span>
-          <span className="header-icon">&gt;</span>
-          <span className="header-icon">&gt;&gt;</span>
+          <DateHeader 
+            selectYear={this.selectYear} 
+            selectMonth={this.selectMonth} />
         </div>
         <div className="datepicker-body">
-          <table>
-            <thead>
-              <tr>
-                {
-                  this.state.weeks_list && (
-                    this.state.weeks_list.map((item, index) => (
-                      <th key={index}>{item}</th>
-                    ))
-                  )
-                }
-              </tr>
-            </thead>
-            <tbody>
-              <DatePanel data={this.state.data}/>
-            </tbody>
-          </table>
+          <DatePanel 
+            data={this.state} />
+          {/* <YearPanel /> */}
+          {/* <MonthPanel /> */}
         </div>
       </div>
     )
@@ -80,6 +69,14 @@ class DatePicker extends Component {
       datetime: datepicker.data.year+''+datepicker.data.month+''+datepicker.data.date,
       weeks_list: datepicker.lang[datepicker.data.lang].weeks
     })
+  }
+  // title select year
+  selectYear () {
+    console.log('-----chencc-----')
+  }
+  // title select month
+  selectMonth () {
+    console.log('--------chenyy----')
   }
 }
 

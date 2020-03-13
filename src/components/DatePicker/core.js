@@ -39,7 +39,6 @@ class DatePickerCore {
   init (options) {
     if (options.min) this.data.min = new Date(options.min);
     if (options.max) this.data.max = new Date(options.max);
-    if (options.isTime) this.data.isTime = options.isTime;
     if (options.start) {
       this.data.start = new Date(options.start);
       let d = this.data.start;
