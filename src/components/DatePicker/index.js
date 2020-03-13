@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './style.scss'
 import DatePickerCore from "./core";
+import DateHeader from './dateHeader'
 import DatePanel from './datePanel.js'
 
 const datepicker = new DatePickerCore()
@@ -23,29 +24,10 @@ class DatePicker extends Component {
     return (
       <div className="datepicker-wrapper">
         <div className="datepicker-header">
-          <span className="header-icon">&lt;</span>
-          <span className="header-icon">&lt;&lt;</span>
-          <span>2019年3月</span>
-          <span className="header-icon">&gt;</span>
-          <span className="header-icon">&gt;&gt;</span>
+          <DateHeader />
         </div>
         <div className="datepicker-body">
-          <table>
-            <thead>
-              <tr>
-                {
-                  this.state.weeks_list && (
-                    this.state.weeks_list.map((item, index) => (
-                      <th key={index}>{item}</th>
-                    ))
-                  )
-                }
-              </tr>
-            </thead>
-            <tbody>
-              <DatePanel data={this.state.data}/>
-            </tbody>
-          </table>
+          <DatePanel data={this.state}/>
         </div>
       </div>
     )

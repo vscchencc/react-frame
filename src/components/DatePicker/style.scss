@@ -1,18 +1,67 @@
 /* 最外层区域 */
 .datepicker-wrapper {
     width: 240px;
-    font-size: 16px;
+    font-size: 14px;
     color: #666666;
     box-shadow: 2px 2px 8px 2px rgba(128, 128, 128, 0.3);
     /* 头部区域 */
     .datepicker-header {
-        padding: 0 20px;
-        height: 30px;
-        line-height: 30px;
-        text-align: center;
-        background: #f0f0f0;
-        border-bottom: 1px solid #cccccc;
-        font-weight: bold;
+        width: 100%;
+        position: relative;
+        .date-header {
+            width: 100%;
+            padding: 0 10px;
+            box-sizing: border-box;
+            height: 30px;
+            line-height: 26px;
+            text-align: center;
+            background: #f0f0f0;
+            border-bottom: 1px solid #cccccc;
+            font-weight: bold;
+            .header-title {
+                cursor: pointer;
+                padding: 0 3px;
+            }
+            .header-icon {
+                width: 20px;
+                height: 24px;
+                display: inline-block;
+                line-height: 26px;
+                text-align: center;
+                cursor: pointer;
+                font-size: 12px;
+                font-weight: 400;
+                &:hover {
+                    color: #2d8cf0;
+                }
+            }
+            .date-picker-prev-btn-arrow-double {
+                &::before {
+                    content: "<<";
+                 }
+            }
+            .date-picker-prev-btn-arrow {
+               &::before {
+                   content: "<";
+                }
+            }
+            .date-picker-prev-btn-forward {
+                &::before {
+                    content: ">";
+                 }
+            }
+            .date-picker-prev-btn-forward-double {
+                &::before {
+                    content: ">>";
+                 }
+            }
+            .date-picker-prev-btn {
+                float: left;
+            }
+            .date-picker-next-btn {
+                float: right;
+            }
+        }
     }
     /* 设置两个按钮 */
     .datepicker-btn {
@@ -47,7 +96,7 @@
             td {
                 height: 30px;
                 text-align: center;
-                border: 1px solid #f0f0f0;
+                // border: 1px solid #f0f0f0;
                 font-size: 10px;
                 width: 14%;
                 cursor: pointer;
