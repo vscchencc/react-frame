@@ -1,27 +1,31 @@
 import React from 'react';
+import { groupArray } from './utils'
 
 function YearPanel (props) {
+  const data = props.data.yearTable ? groupArray(props.data.yearTable, 3) : []
+  const currentyear = props.data.year
   return(
     <table className="year-wrapper">
       <tbody>
-        <tr>
-          <td>2018</td>
-          <td>2019</td>
-          <td>2020</td>
-        </tr>
-        <tr>
-          <td>2018</td>
-          <td>2019</td>
-          <td>2020</td>
-        </tr>
-        <tr>
-          <td>2018</td>
-          <td>2019</td>
-          <td>2020</td>
-        </tr>
-        <tr>
-          <td>2018</td>
-        </tr>
+        {
+          data.map((item, index) => {
+            {   
+              return (
+                <tr key={index}>
+                  {
+                    item.map((val, i) => {
+                      return (
+                        <td key={i}>
+                          <a className={currentyear === val ? 'active' : ''} onClick={() => {props.selectYear(val)}}>{val}</a>
+                        </td>
+                      )
+                    })
+                  }
+                </tr>
+              )
+            }
+          })
+        }
       </tbody>
     </table>
   )

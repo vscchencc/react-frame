@@ -1,18 +1,28 @@
 import React from 'react';
 
 function DateHeader(props) {
-  console.log(props)
-  // const data = props.data ? groupArray(props.data.month.table, 7) : [];
+  const year = props.data.headerValue ? props.data.headerValue.split('/')[0] : ''
+  const month = props.data.headerValue ? props.data.headerValue.split('/')[1] : ''
+  const currentPanel = props.data.currentPanel
+  
   return (
     <div className="date-header">
-      <span className="header-icon date-picker-prev-btn date-picker-prev-btn-arrow-double"></span>
-      <span className="header-icon date-picker-prev-btn date-picker-prev-btn-arrow"></span>
+      <span className="header-icon date-picker-prev-btn date-picker-prev-btn-arrow-double" onClick={() => {props.prevYear()}}></span>
+      {
+        currentPanel === 'date' && <span className="header-icon date-picker-prev-btn date-picker-prev-btn-arrow" onClick={() => {props.prevMonth()}}></span>
+      }
       <span>
-        <span className="header-title" onClick={() => {props.selectYear()}}>2019 年</span>
-        <span className="header-title" onClick={() => {props.selectMonth()}}>4 月</span>
+        <span className="header-title"
+          onClick={() => {props.selectYearType()}}>{year} 年</span>
+        {
+          currentPanel === 'date' && <span className="header-title"
+            onClick={() => {props.selectMonthType()}}>{month} 月</span>
+        }
       </span>
       <span className="header-icon date-picker-next-btn date-picker-prev-btn-forward-double"></span>
-      <span className="header-icon date-picker-next-btn date-picker-prev-btn-forward"></span>
+      {
+        currentPanel === 'date' && <span className="header-icon date-picker-next-btn date-picker-prev-btn-forward"></span>
+      }
     </div>
   )
 }

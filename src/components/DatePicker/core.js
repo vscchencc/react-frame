@@ -19,6 +19,8 @@ class DatePickerCore {
     this.ranges = {
       months: [31,false,31,30,31,30,31,31,30,31,30,31]
     }
+    // month数组
+    this.monthArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 
     this.lang = {}
     // 多语言设置
@@ -53,11 +55,69 @@ class DatePickerCore {
     }
     return this;
   }
+  // 生成当前年份数组
+  createYear (cb) {
+    let year = parseInt(this.data.year)
 
-  // 生成月份的日期数组
-  createMonthDate (cb) {
-    let year = parseInt(this.data.year),
-      month = parseInt(this.data.month)
+    let yaerArr = []
+    for (let i = 0; i < 10; i++) {
+      yaerArr.push(year + i)
+    }
+
+    cb && cb(yaerArr)
+    return this
+  }
+
+  // prev double 更新年份 一次更新10年
+  updatePrevDouYear (val) {
+    let yearTable = []
+    for (let i = 10; i > 0; i--) {
+      yearTable.push(val[0] - i)
+    }
+    return yearTable
+  }
+
+  updatePreYear (val) {
+    let yearTable = []
+    for (let i = 0; i < 10; i++) {
+      yearTable.push(val[i] - 1)
+    }
+    return yearTable
+  }
+
+  // 生成月份数组
+  createMonth (cb) {
+    let year = parseInt(this.data.year)
+
+    const monthTable = []
+    for (let i = 0; i < this.monthArr.length; i++) {
+      monthTable.push({
+        year: year,
+        month: this.monthArr[i]
+      })
+    }
+    cb && cb(monthTable)
+    return this
+  }
+
+  // 更新月份数据
+  updateMonth (year) {
+    const monthTable = []
+
+    for (let i = 0; i < this.monthArr.length; i++) {
+      monthTable.push({
+        year: year,
+        month: this.monthArr[i]
+      })
+    }
+
+    return monthTable
+  }
+
+  // 生成当前月份的日期数组
+  createMonthDate (cb, data) {
+    let year = data ? data.year : parseInt(this.data.year),
+      month = data ? data.month : parseInt(this.data.month)
     
     // 将时间处理到该年该月的1号
     let d = new Date()
@@ -120,6 +180,16 @@ class DatePickerCore {
     })
 
     return this
+  }
+
+  // 更新当前月份日期
+  updateMonthDate (data) {
+    let value = {}
+    this.createMonthDate((val) => {
+      value = val
+    }, data)
+
+    return value
   }
 
   // 创建小时

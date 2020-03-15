@@ -14,69 +14,146 @@ class DatePicker extends Component {
     this.state = {
       min: this.props.min || '1900/01/01',
       max: this.props.max,
-      start: this.props.start
+      start: this.props.start,
+      currentPanel: 'date'
     }
     this.init = this.init.bind(this)
+    this.selectYearType = this.selectYearType.bind(this)
+    this.selectMonthType = this.selectMonthType.bind(this)
     this.selectYear = this.selectYear.bind(this)
+    this.selectMonth = this.selectMonth.bind(this)
+    this.selectDate = this.selectDate.bind(this)
+    this.prevYear = this.prevYear.bind(this)
+    this.prevMonth = this.prevMonth.bind(this)
   }
   componentDidMount () {
     this.init()
   }
   render () {
+    const { currentPanel } = this.state
     return (
       <div className="datepicker-wrapper">
         <div className="datepicker-header">
           <DateHeader 
-            selectYear={this.selectYear} 
-            selectMonth={this.selectMonth} />
+            data = {this.state}
+            selectYearType={this.selectYearType} 
+            selectMonthType={this.selectMonthType} 
+            prevYear={this.prevYear} 
+            prevMonth={this.prevMonth} />
         </div>
         <div className="datepicker-body">
-          <DatePanel 
-            data={this.state} />
-          {/* <YearPanel /> */}
-          {/* <MonthPanel /> */}
+          {
+            currentPanel && currentPanel === 'year' &&
+              <YearPanel 
+                data={this.state} 
+                selectYear={this.selectYear}/> ||
+            currentPanel === 'month' &&
+              <MonthPanel 
+                selectMonth={this.selectMonth}
+                data={this.state} /> || 
+            currentPanel === 'date' &&
+              <DatePanel
+                selectDate = {this.selectDate}
+                data={this.state} />
+          }
         </div>
       </div>
     )
   }
   init () {
-    let data = {}
+    let yearTable = [],
+        monthTable = [],
+        dateTable = []
     datepicker.init({
       min: this.state.min,
       max:  this.state.max,
       start: this.state.start,
       isTime: this.state.isTime
+    }).createYear((info) => {
+      yearTable = info
+    }).createMonth((info) => {
+      monthTable = info
     }).createMonthDate((info) => {
-      data = Object.assign({}, data, {
-          month: info
-      })
-    }).createHours((info) => {
-      data = Object.assign({}, data, {
-          hours: info
-      });
-    }).createMinutes((info) => {
-      data = Object.assign({}, data, {
-          minutes: info
-      });
+      dateTable = info
     })
+
     this.setState({
-      data: data,
-      year: datepicker.data.year,
-      month: datepicker.data.month,
-      date: datepicker.data.date,
-      hours: datepicker.data.hours,
-      minutes: datepicker.data.minutes,
-      datetime: datepicker.data.year+''+datepicker.data.month+''+datepicker.data.date,
-      weeks_list: datepicker.lang[datepicker.data.lang].weeks
+      headerValue: datepicker.data.year + '/' + datepicker.data.month,              // calendar title
+      yearTable: yearTable,                                                         // calendar year table
+      monthTable: monthTable,                                                       // calendar month table
+      dateTable: dateTable,                                                         // calendar date table
+      weeks_list: datepicker.lang[datepicker.data.lang].weeks,                      // calendar language week
+      year: datepicker.data.year,                
+      month: datepicker.data.year + '/' + datepicker.data.month,                    
+      date: datepicker.data.year + '/' + datepicker.data.month + '/' + datepicker.data.date,
+      datetime: datepicker.data.year + '' + datepicker.data.month + '' + datepicker.data.date
     })
   }
   // title select year
-  selectYear () {
-    console.log('-----chencc-----')
+  selectYearType () {
+    this.setState({
+      currentPanel: 'year'
+    })
   }
   // title select month
-  selectMonth () {
-    console.log('--------chenyy----')
+  selectMonthType () {
+    this.setState({
+      currentPanel: 'month'
+    })
+  }
+
+  // selectYear 
+  selectYear (val) {
+    // 选择年份后更新月份table
+    const monthTable = datepicker.updateMonth(val)
+
+    this.setState({
+      year: val,
+      monthTable: monthTable,
+      headerValue: val + '/' + this.state.month.split('/')[1],
+      currentPanel: 'month'
+    })
+  }
+
+  // selectMonth
+  selectMonth (val) {
+    // 选择月份后更新日期table
+    const dateTable = datepicker.updateMonthDate(val)
+    
+    this.setState({
+      month: val.year + '/' + val.month,
+      headerValue: val.year + '/' + val.month,
+      dateTable: dateTable,
+      currentPanel: 'date'
+    })
+  }
+
+  // selectDate
+  selectDate (val) {
+    this.setState({
+      date: val.year + '/' + val.month + '/' + val.date,
+    })
+  }
+
+  // prev-double
+  prevYear () {
+    if (this.state.currentPanel === 'year') {
+      const yearTable = datepicker.updatePrevDouYear(this.state.yearTable)
+      this.setState({
+        yearTable: yearTable
+      })
+    } else {
+      const yearTable = datepicker.updatePreYear(this.state.yearTable)
+      this.setState({
+        yearTable: yearTable,
+        headerValue: yearTable[0] + '/' + this.state.month.split('/')[1],
+      })
+    }
+  }
+  
+  // prev
+  prevMonth () {
+    console.log('------prev-----')
   }
 }
 

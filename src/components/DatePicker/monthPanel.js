@@ -1,31 +1,32 @@
 import React from 'react';
+import { groupArray } from './utils'
 
 function MonthPanel (props) {
+  const data = props.data.monthTable ? groupArray(props.data.monthTable, 3) : []
+  const current = props.data.month.split('/')
+
   return(
     <table className="month-wrapper">
       <tbody>
-        <tr>
-          <td>
-            <span>1月</span>
-          </td>
-          <td>2月</td>
-          <td>3月</td>
-        </tr>
-        <tr>
-          <td>4月</td>
-          <td>5月</td>
-          <td>6月</td>
-        </tr>
-        <tr>
-          <td>7月</td>
-          <td>8月</td>
-          <td>9月</td>
-        </tr>
-        <tr>
-          <td>10月</td>
-          <td>11月</td>
-          <td>12月</td>
-        </tr>
+      {
+        current.length > 0  && data.map((item, index) => {
+          {   
+            return (
+              <tr key={index}>
+                {
+                  item.map((val, i) => {
+                    return (
+                      <td key={i}>
+                        <a className={parseInt(current[0]) === val.year && parseInt(current[1]) === val.month ? 'active' : ''} onClick={() => {props.selectMonth(val)}}>{val.month}月</a>
+                      </td>
+                    )
+                  })
+                }
+              </tr>
+            )
+          }
+        })
+      }
       </tbody>
     </table>
   )

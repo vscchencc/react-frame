@@ -4,6 +4,7 @@
     font-size: 14px;
     color: #666666;
     box-shadow: 2px 2px 8px 2px rgba(128, 128, 128, 0.3);
+    border-radius: 3px;
     /* 头部区域 */
     .datepicker-header {
         width: 100%;
@@ -15,9 +16,9 @@
             height: 30px;
             line-height: 26px;
             text-align: center;
-            background: #f0f0f0;
+            background: #fff;
             border-bottom: 1px solid #cccccc;
-            font-weight: bold;
+            font-weight: normal;
             .header-title {
               cursor: pointer;
               padding: 0 3px;
@@ -34,6 +35,7 @@
                 cursor: pointer;
                 font-size: 12px;
                 font-weight: 400;
+                color: #c5c8ce;
                 &:hover {
                     color: #2d8cf0;
                 }
@@ -102,24 +104,99 @@
             td {
                 height: 28px;
                 text-align: center;
-                // border: 1px solid #f0f0f0;
                 font-size: 10px;
-                width: 14%;
                 cursor: pointer;
+                cursor: pointer;
+                color: #000;
+                position: relative;
+                a {
+                  display: inline-block;
+                  position: absolute;
+                  width: 20px;
+                  height: 16px;
+                  padding: 2px 0;
+                  border-radius: 3px;
+                  top: 4px;
+                  left: 8px;
+                  text-align: center;
+                  vertical-align: middle;
+                  &.active {
+                    color: #fff;
+                    background-color: #2d8cf0;
+                  }
+                  &:hover {
+                    color: #fff;
+                    background-color: #2d8cf0;
+                  }
+                }
             }
           }
           &.year-wrapper {
             td {
               height: 51px;
               text-align: center;
-              line-height: 51px;
+              cursor: pointer;
+              color: #000;
+              text-align: center;
+              vertical-align: middle;
+              font-size: 12px;
+              position: relative;
+              a {
+                display: inline-block;
+                position: absolute;
+                width: 40px;
+                height: 16px;
+                padding: 4px 0;
+                border-radius: 3px;
+                top: 14px;
+                left: 20px;
+                text-align: center;
+                vertical-align: middle;
+                // padding: 1px 2px;
+                // border-radius: 3px;
+                &.active {
+                  color: #fff;
+                  background-color: #2d8cf0;
+                }
+                &:hover {
+                  color: #fff;
+                  background-color: #2d8cf0;
+                }
+              }
             }
           }
           &.month-wrapper {
             td {
               height: 51px;
               text-align: center;
-              line-height: 51px;
+              cursor: pointer;
+              color: #000;
+              text-align: center;
+              vertical-align: middle;
+              font-size: 12px;
+              position: relative;
+              a {
+                display: inline-block;
+                position: absolute;
+                width: 40px;
+                height: 16px;
+                padding: 4px 0;
+                border-radius: 3px;
+                top: 14px;
+                left: 20px;
+                text-align: center;
+                vertical-align: middle;
+                // padding: 1px 2px;
+                // border-radius: 3px;
+                &.active {
+                  color: #fff;
+                  background-color: #2d8cf0;
+                }
+                &:hover {
+                  color: #fff;
+                  background-color: #2d8cf0;
+                }
+              }
             }
           }
         }

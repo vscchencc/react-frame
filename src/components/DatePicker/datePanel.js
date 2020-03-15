@@ -1,8 +1,11 @@
 import React from 'react';
+import { groupArray } from './utils'
 
 function DatePanel(props) {
-  const data = props.data.data ? groupArray(props.data.data.month.table, 7) : [];
+  const data = props.data.dateTable ? groupArray(props.data.dateTable.table, 7) : [];
   const weeks_list = props.data.weeks_list
+  const current = props.data.date ? props.data.date.split('/') : []
+
   return (
     <table className="date-wrapper">
       <thead>
@@ -18,14 +21,17 @@ function DatePanel(props) {
       </thead>
       <tbody>
         {
-          data.map((item, index) => {
+          current.length > 0 && data.map((item, index) => {
             {   
               return (
                 <tr key={index}>
                   {
                     item.map((val, i) => {
                       return (
-                        <td key={i}>{val.date}</td>
+                        <td key={i}>
+                          <a className={parseInt(current[0]) === val.year && parseInt(current[1]) === val.month && parseInt(current[2]) === val.date ? 'active' : ''} 
+                            onClick={() => {props.selectDate(val)}}>{val.date}</a>
+                        </td>
                       )
                     })
                   }
@@ -37,16 +43,6 @@ function DatePanel(props) {
       </tbody>
     </table>
   )
-}
-
-// 分割数组
-function groupArray (arr, subGroupLength) {
-  let index = 0
-  let newArray = []
-  while(index < arr.length) {
-      newArray.push(arr.slice(index, index += subGroupLength))
-  }
-  return newArray
 }
 
 export default DatePanel
