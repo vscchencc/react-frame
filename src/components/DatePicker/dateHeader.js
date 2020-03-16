@@ -19,9 +19,9 @@ function DateHeader(props) {
             onClick={() => {props.selectMonthType()}}>{month} 月</span>
         }
       </span>
-      <span className="header-icon date-picker-next-btn date-picker-prev-btn-forward-double"></span>
+      <span className="header-icon date-picker-next-btn date-picker-prev-btn-forward-double" onClick={() => {props.nextYear()}}></span>
       {
-        currentPanel === 'date' && <span className="header-icon date-picker-next-btn date-picker-prev-btn-forward"></span>
+        currentPanel === 'date' && <span className="header-icon date-picker-next-btn date-picker-prev-btn-forward" onClick={() => {props.nextMonth()}}></span>
       }
     </div>
   )

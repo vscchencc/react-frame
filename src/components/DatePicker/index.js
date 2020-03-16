@@ -25,6 +25,8 @@ class DatePicker extends Component {
     this.selectDate = this.selectDate.bind(this)
     this.prevYear = this.prevYear.bind(this)
     this.prevMonth = this.prevMonth.bind(this)
+    this.nextYear = this.nextYear.bind(this)
+    this.nextMonth = this.nextMonth.bind(this)
   }
   componentDidMount () {
     this.init()
@@ -38,8 +40,10 @@ class DatePicker extends Component {
             data = {this.state}
             selectYearType={this.selectYearType} 
             selectMonthType={this.selectMonthType} 
-            prevYear={this.prevYear} 
-            prevMonth={this.prevMonth} />
+            prevYear={this.prevYear}  
+            nextYear={this.nextYear}
+            prevMonth={this.prevMonth}
+            nextMonth={this.nextMonth} />
         </div>
         <div className="datepicker-body">
           {
@@ -144,6 +148,29 @@ class DatePicker extends Component {
       })
     } else {
       const yearTable = datepicker.updatePreYear(this.state.yearTable)
+      const monthTable = datepicker.updateMonth(yearTable[0])
+      const dateTable = datepicker.updateMonthDate({
+        year: yearTable[0],
+        month: this.state.month.split('/')[1]
+      })
+      this.setState({
+        yearTable: yearTable,
+        monthTable: monthTable,
+        dateTable: dateTable,
+        headerValue: yearTable[0] + '/' + this.state.month.split('/')[1],
+      })
+    }
+  }
+
+  // next-double
+  nextYear () {
+    if (this.state.currentPanel === 'year') {
+      const yearTable = datepicker.updateNextDouYear(this.state.yearTable)
+      this.setState({
+        yearTable: yearTable
+      })
+    } else {
+      const yearTable = datepicker.updateNextYear(this.state.yearTable)
       this.setState({
         yearTable: yearTable,
         headerValue: yearTable[0] + '/' + this.state.month.split('/')[1],
@@ -151,9 +178,15 @@ class DatePicker extends Component {
     }
   }
   
-  // prev
+  // prevMonth
   prevMonth () {
     console.log('------prev-----')
+    // const 
+  }
+
+  // nextMonth
+  nextMonth () {
+    console.log('------next------')
   }
 }
 

@@ -77,10 +77,29 @@ class DatePickerCore {
     return yearTable
   }
 
+  // next double year
+  updateNextDouYear (val) {
+    let yearTable = []
+    for (let i = 1; i <= 10; i++) {
+      yearTable.push(val[9] + i)
+    }
+    return yearTable
+  }
+
+  // prev uear
   updatePreYear (val) {
     let yearTable = []
     for (let i = 0; i < 10; i++) {
       yearTable.push(val[i] - 1)
+    }
+    return yearTable
+  }
+
+  // next
+  updateNextYear (val) {
+    let yearTable = []
+    for (let i = 0; i < 10; i++) {
+      yearTable.push(val[i] + 1)
     }
     return yearTable
   }
