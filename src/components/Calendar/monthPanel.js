@@ -3,7 +3,7 @@ import { groupArray } from './utils'
 
 function MonthPanel (props) {
   const data = props.data.monthTable ? groupArray(props.data.monthTable, 3) : []
-  const current = props.data.month.split('/')
+  const current = props.data.month ? props.data.month.split('/') : ''
 
   return(
     <table className="month-wrapper">

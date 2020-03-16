@@ -1,21 +1,21 @@
 import React, {Component} from 'react';
 import './style.scss'
-import DatePickerCore from "./core";
+import CalendarCore from "./core";
 import DateHeader from './dateHeader'
 import YearPanel from './yearPanel'
 import DatePanel from './datePanel.js'
 import MonthPanel from './monthPanel'
 
-const datepicker = new DatePickerCore()
+const calendar = new CalendarCore()
 
-class DatePicker extends Component {
+class Calendar extends Component {
   constructor (props) {
     super(props)
     this.state = {
+      type: this.props.type || 'date',
       min: this.props.min || '1900/01/01',
       max: this.props.max,
-      start: this.props.start,
-      currentPanel: 'date'
+      currentPanel: this.props.type || 'date'
     }
     this.init = this.init.bind(this)
     this.selectYearType = this.selectYearType.bind(this)
@@ -24,9 +24,11 @@ class DatePicker extends Component {
     this.selectMonth = this.selectMonth.bind(this)
     this.selectDate = this.selectDate.bind(this)
     this.prevYear = this.prevYear.bind(this)
-    this.prevMonth = this.prevMonth.bind(this)
     this.nextYear = this.nextYear.bind(this)
+    this.prevMonth = this.prevMonth.bind(this)
     this.nextMonth = this.nextMonth.bind(this)
+
+    this.changeValue = this.changeValue.bind(this)
   }
   componentDidMount () {
     this.init()
@@ -34,18 +36,18 @@ class DatePicker extends Component {
   render () {
     const { currentPanel } = this.state
     return (
-      <div className="datepicker-wrapper">
-        <div className="datepicker-header">
+      <div className="calendar-wrapper">
+        <div className="calendar-header">
           <DateHeader 
             data = {this.state}
             selectYearType={this.selectYearType} 
             selectMonthType={this.selectMonthType} 
-            prevYear={this.prevYear}  
+            prevYear={this.prevYear}
             nextYear={this.nextYear}
             prevMonth={this.prevMonth}
             nextMonth={this.nextMonth} />
         </div>
-        <div className="datepicker-body">
+        <div className="calendar-body">
           {
             currentPanel && currentPanel === 'year' &&
               <YearPanel 
@@ -64,15 +66,15 @@ class DatePicker extends Component {
       </div>
     )
   }
+  // 初始化 获取 当前年月日
   init () {
     let yearTable = [],
         monthTable = [],
         dateTable = []
-    datepicker.init({
+    calendar.init({
       min: this.state.min,
       max:  this.state.max,
-      start: this.state.start,
-      isTime: this.state.isTime
+      start: this.state.start
     }).createYear((info) => {
       yearTable = info
     }).createMonth((info) => {
@@ -82,15 +84,15 @@ class DatePicker extends Component {
     })
 
     this.setState({
-      headerValue: datepicker.data.year + '/' + datepicker.data.month,              // calendar title
+      headerValue: calendar.data.year + '/' + calendar.data.month,              // calendar title
       yearTable: yearTable,                                                         // calendar year table
       monthTable: monthTable,                                                       // calendar month table
       dateTable: dateTable,                                                         // calendar date table
-      weeks_list: datepicker.lang[datepicker.data.lang].weeks,                      // calendar language week
-      year: datepicker.data.year,                
-      month: datepicker.data.year + '/' + datepicker.data.month,                    
-      date: datepicker.data.year + '/' + datepicker.data.month + '/' + datepicker.data.date,
-      datetime: datepicker.data.year + '' + datepicker.data.month + '' + datepicker.data.date
+      weeks_list: calendar.lang[calendar.data.lang].weeks,                      // calendar language week
+      year: calendar.data.year,                
+      month: calendar.data.year + '/' + calendar.data.month,                    
+      date: calendar.data.year + '/' + calendar.data.month + '/' + calendar.data.date,
+      datetime: calendar.data.year + '' + calendar.data.month + '' + calendar.data.date
     })
   }
   // title select year
@@ -109,7 +111,7 @@ class DatePicker extends Component {
   // selectYear 
   selectYear (val) {
     // 选择年份后更新月份table
-    const monthTable = datepicker.updateMonth(val)
+    const monthTable = calendar.updateMonth(val)
 
     this.setState({
       year: val,
@@ -122,7 +124,7 @@ class DatePicker extends Component {
   // selectMonth
   selectMonth (val) {
     // 选择月份后更新日期table
-    const dateTable = datepicker.updateMonthDate(val)
+    const dateTable = calendar.updateMonthDate(val)
     
     this.setState({
       month: val.year + '/' + val.month,
@@ -137,19 +139,21 @@ class DatePicker extends Component {
     this.setState({
       date: val.year + '/' + val.month + '/' + val.date,
     })
+
+    this.props.changeValue && this.changeValue(val)
   }
 
   // prev-double
   prevYear () {
     if (this.state.currentPanel === 'year') {
-      const yearTable = datepicker.updatePrevDouYear(this.state.yearTable)
+      const yearTable = calendar.updatePrevDouYear(this.state.yearTable)
       this.setState({
         yearTable: yearTable
       })
     } else {
-      const yearTable = datepicker.updatePreYear(this.state.yearTable)
-      const monthTable = datepicker.updateMonth(yearTable[0])
-      const dateTable = datepicker.updateMonthDate({
+      const yearTable = calendar.updatePreYear(this.state.yearTable)
+      const monthTable = calendar.updateMonth(yearTable[0])
+      const dateTable = calendar.updateMonthDate({
         year: yearTable[0],
         month: this.state.month.split('/')[1]
       })
@@ -165,29 +169,80 @@ class DatePicker extends Component {
   // next-double
   nextYear () {
     if (this.state.currentPanel === 'year') {
-      const yearTable = datepicker.updateNextDouYear(this.state.yearTable)
+      const yearTable = calendar.updateNextDouYear(this.state.yearTable)
       this.setState({
         yearTable: yearTable
       })
     } else {
-      const yearTable = datepicker.updateNextYear(this.state.yearTable)
+      const yearTable = calendar.updateNextYear(this.state.yearTable)
+      const monthTable = calendar.updateMonth(yearTable[0])
+      const dateTable = calendar.updateMonthDate({
+        year: yearTable[0],
+        month: this.state.month.split('/')[1]
+      })
       this.setState({
         yearTable: yearTable,
+        monthTable: monthTable,
+        dateTable: dateTable,
         headerValue: yearTable[0] + '/' + this.state.month.split('/')[1],
       })
     }
   }
   
-  // prevMonth
+  // prev
   prevMonth () {
-    console.log('------prev-----')
-    // const 
+    const year = parseInt(this.state.headerValue.split('/')[0])
+    const month = parseInt(this.state.headerValue.split('/')[1])
+    if ((month - 1) <= 0) {
+      const dateTable = calendar.updateMonthDate({
+        year: year - 1,
+        month: 12
+      })
+      this.setState({
+        dateTable: dateTable,
+        headerValue: year - 1 + '/' + 12
+      })
+    } else {
+      const dateTable = calendar.updateMonthDate({
+        year: year,
+        month: month - 1
+      })
+      this.setState({
+        dateTable: dateTable,
+        headerValue: year + '/' + (month - 1)
+      })
+    }
   }
 
-  // nextMonth
+  // next
   nextMonth () {
-    console.log('------next------')
+    let year = parseInt(this.state.headerValue.split('/')[0])
+    let month = parseInt(this.state.headerValue.split('/')[1])
+    if ((month + 1) > 12) {
+      const dateTable = calendar.updateMonthDate({
+        year: year + 1,
+        month: 1
+      })
+      this.setState({
+        dateTable: dateTable,
+        headerValue: year + 1 + '/' + 1
+      })
+    } else {
+      const dateTable = calendar.updateMonthDate({
+        year: year,
+        month: month + 1
+      })
+      this.setState({
+        dateTable: dateTable,
+        headerValue: year + '/' + (month + 1)
+      })
+    }
+  }
+
+  // return component value
+  changeValue (val) {
+    this.props.changeValue(val)
   }
 }
 
-export default DatePicker
+export default Calendar

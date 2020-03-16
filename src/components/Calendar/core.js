@@ -1,8 +1,10 @@
 /**
- * DatePicker 日期时间选择器核心JS
+ * 2020/3/16
+ * Author chencc
+ * CalendarCore 日期时间选择器核心JS
  * 所产生的callback 均为同步流程 暂无异步流程
  */
-class DatePickerCore {
+class CalendarCore {
   constructor () {
     let d = new Date()
     this.data = {
@@ -150,8 +152,8 @@ class DatePickerCore {
     let table = []
     for (let i = 0; i < days; i++) {
       table.push({
-        'year': year,
-        'month': month,
+        'year': parseInt(year),
+        'month': parseInt(month),
         'date': i + 1
       });
     }
@@ -169,8 +171,8 @@ class DatePickerCore {
       if (!prev_days) prev_days = this.isleap(year) ? 29 : 28
       for (let i = 0; i < first_week; i++) {
         table.unshift({
-          'year': prev_month_year,
-          'month': prev_month,
+          'year': parseInt(prev_month_year),
+          'month': parseInt(prev_month),
           'date': prev_days - i
         })
       }
@@ -187,8 +189,8 @@ class DatePickerCore {
     }
     for (let i = 1; i < last_days + 1; i++) {
       table.push({
-        'year': next_month_year,
-        'month': next_month,
+        'year': parseInt(next_month_year),
+        'month': parseInt(next_month),
         'date': i
       })
     }
@@ -246,4 +248,4 @@ class DatePickerCore {
   }
 }
 
-export default DatePickerCore
+export default CalendarCore
