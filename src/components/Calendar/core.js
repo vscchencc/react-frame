@@ -63,7 +63,9 @@ class CalendarCore {
 
     let yaerArr = []
     for (let i = 0; i < 10; i++) {
-      yaerArr.push(year + i)
+      yaerArr.push({
+        year: year + i
+      })
     }
 
     cb && cb(yaerArr)
@@ -74,7 +76,9 @@ class CalendarCore {
   updatePrevDouYear (val) {
     let yearTable = []
     for (let i = 10; i > 0; i--) {
-      yearTable.push(val[0] - i)
+      yearTable.push({
+        year: val[0].year - i
+      })
     }
     return yearTable
   }
@@ -83,7 +87,9 @@ class CalendarCore {
   updateNextDouYear (val) {
     let yearTable = []
     for (let i = 1; i <= 10; i++) {
-      yearTable.push(val[9] + i)
+      yearTable.push({
+        year: val[9].year + i
+      })
     }
     return yearTable
   }
@@ -92,7 +98,9 @@ class CalendarCore {
   updatePreYear (val) {
     let yearTable = []
     for (let i = 0; i < 10; i++) {
-      yearTable.push(val[i] - 1)
+      yearTable.push({
+        year: val[i].year - 1
+      })
     }
     return yearTable
   }
@@ -101,7 +109,9 @@ class CalendarCore {
   updateNextYear (val) {
     let yearTable = []
     for (let i = 0; i < 10; i++) {
-      yearTable.push(val[i] + 1)
+      yearTable.push({
+        year: val[i].year + 1
+      })
     }
     return yearTable
   }
@@ -154,7 +164,8 @@ class CalendarCore {
       table.push({
         'year': parseInt(year),
         'month': parseInt(month),
-        'date': i + 1
+        'date': i + 1,
+        'status': 'current'
       });
     }
 
@@ -173,7 +184,8 @@ class CalendarCore {
         table.unshift({
           'year': parseInt(prev_month_year),
           'month': parseInt(prev_month),
-          'date': prev_days - i
+          'date': prev_days - i,
+          'status': 'prev'
         })
       }
     }
@@ -191,7 +203,8 @@ class CalendarCore {
       table.push({
         'year': parseInt(next_month_year),
         'month': parseInt(next_month),
-        'date': i
+        'date': i,
+        'status': 'next'
       })
     }
 
@@ -211,6 +224,11 @@ class CalendarCore {
     }, data)
 
     return value
+  }
+
+  // 处理返回时间年月日
+  handleDateVal (type, val) {
+
   }
 
   // 创建小时

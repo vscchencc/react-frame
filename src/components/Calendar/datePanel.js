@@ -27,9 +27,11 @@ function DatePanel(props) {
                 <tr key={index}>
                   {
                     item.map((val, i) => {
+                      const classNameActive = parseInt(current[0]) === val.year && parseInt(current[1]) === val.month && parseInt(current[2]) === val.date ? 'active ' : ' '
+                      const classNameCurrent = val.status !== 'current' ? 'prevandnext' : ''
                       return (
                         <td key={i}>
-                          <a className={parseInt(current[0]) === val.year && parseInt(current[1]) === val.month && parseInt(current[2]) === val.date ? 'active' : ''} 
+                          <a className={classNameActive + classNameCurrent} 
                             onClick={() => {props.selectDate(val)}}>{val.date}</a>
                         </td>
                       )

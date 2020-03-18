@@ -12,7 +12,9 @@ export default class Page1 extends Component {
       return (
           <div className="page-box">
               <p>this is Page1~</p>
-              <Calendar changeValue={(info) => {this.changeValue(info)}} />
+              <Calendar type="date"
+                format="YYYYMMDD"
+                changeValue={(info) => {this.changeValue(info)}} />
           </div>
       )
   }

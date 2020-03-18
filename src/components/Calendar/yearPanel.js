@@ -16,7 +16,7 @@ function YearPanel (props) {
                     item.map((val, i) => {
                       return (
                         <td key={i}>
-                          <a className={currentyear === val ? 'active' : ''} onClick={() => {props.selectYear(val)}}>{val}</a>
+                          <a className={currentyear === val.year ? 'active' : ''} onClick={() => {props.selectYear(val)}}>{val.year}</a>
                         </td>
                       )
                     })

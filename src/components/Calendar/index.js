@@ -73,8 +73,7 @@ class Calendar extends Component {
         dateTable = []
     calendar.init({
       min: this.state.min,
-      max:  this.state.max,
-      start: this.state.start
+      max:  this.state.max
     }).createYear((info) => {
       yearTable = info
     }).createMonth((info) => {
@@ -110,37 +109,55 @@ class Calendar extends Component {
 
   // selectYear 
   selectYear (val) {
-    // 选择年份后更新月份table
-    const monthTable = calendar.updateMonth(val)
-
-    this.setState({
-      year: val,
-      monthTable: monthTable,
-      headerValue: val + '/' + this.state.month.split('/')[1],
-      currentPanel: 'month'
-    })
+    // 根据 type 类型  如果只是year则直接返回结果
+    if (this.state.type === 'year') {
+      this.changeValue(val)
+      this.setState({
+        year: val.year,
+        headerValue: val.year + '/'
+      })
+    } else {
+      // 选择年份后更新月份table
+      const monthTable = calendar.updateMonth(val.year)
+      this.setState({
+        year: val,
+        monthTable: monthTable,
+        headerValue: val.year + '/' + this.state.month.split('/')[1],
+        currentPanel: 'month'
+      })
+    }
   }
 
   // selectMonth
   selectMonth (val) {
-    // 选择月份后更新日期table
-    const dateTable = calendar.updateMonthDate(val)
-    
-    this.setState({
-      month: val.year + '/' + val.month,
-      headerValue: val.year + '/' + val.month,
-      dateTable: dateTable,
-      currentPanel: 'date'
-    })
+    if (this.state.type === 'month') {
+      this.setState({
+        month: val.year + '/' + val.month,
+        headerValue: val.year + '/' + val.month
+      })
+      this.changeValue(val)
+    } else {
+      // 选择月份后更新日期table
+      const dateTable = calendar.updateMonthDate(val)
+      this.setState({
+        month: val.year + '/' + val.month,
+        headerValue: val.year + '/' + val.month,
+        dateTable: dateTable,
+        currentPanel: 'date'
+      })
+    }
   }
 
   // selectDate
   selectDate (val) {
+    console.log(val)
+  if (val.status !== 'current') {
     this.setState({
       date: val.year + '/' + val.month + '/' + val.date,
     })
-
-    this.props.changeValue && this.changeValue(val)
+  } else {
+  }
+  this.props.changeValue && this.changeValue(val)
   }
 
   // prev-double
@@ -152,16 +169,16 @@ class Calendar extends Component {
       })
     } else {
       const yearTable = calendar.updatePreYear(this.state.yearTable)
-      const monthTable = calendar.updateMonth(yearTable[0])
+      const monthTable = calendar.updateMonth(yearTable[0].year)
       const dateTable = calendar.updateMonthDate({
-        year: yearTable[0],
+        year: yearTable[0].year,
         month: this.state.month.split('/')[1]
       })
       this.setState({
         yearTable: yearTable,
         monthTable: monthTable,
         dateTable: dateTable,
-        headerValue: yearTable[0] + '/' + this.state.month.split('/')[1],
+        headerValue: yearTable[0].year + '/' + this.state.month.split('/')[1],
       })
     }
   }
@@ -175,16 +192,16 @@ class Calendar extends Component {
       })
     } else {
       const yearTable = calendar.updateNextYear(this.state.yearTable)
-      const monthTable = calendar.updateMonth(yearTable[0])
+      const monthTable = calendar.updateMonth(yearTable[0].year)
       const dateTable = calendar.updateMonthDate({
-        year: yearTable[0],
+        year: yearTable[0].year,
         month: this.state.month.split('/')[1]
       })
       this.setState({
         yearTable: yearTable,
         monthTable: monthTable,
         dateTable: dateTable,
-        headerValue: yearTable[0] + '/' + this.state.month.split('/')[1],
+        headerValue: yearTable[0].year + '/' + this.state.month.split('/')[1],
       })
     }
   }

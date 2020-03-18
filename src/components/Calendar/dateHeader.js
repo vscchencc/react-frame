@@ -1,8 +1,8 @@
 import React from 'react';
 
 function DateHeader(props) {
-  const year = props.data.headerValue ? props.data.headerValue.split('/')[0] : ''
-  const month = props.data.headerValue ? props.data.headerValue.split('/')[1] : ''
+  const year = props.data.headerValue && props.data.headerValue.split('/').length > 0 ? props.data.headerValue.split('/')[0] : ''
+  const month = props.data.headerValue && props.data.headerValue.split('/').length > 1 ? props.data.headerValue.split('/')[1] : ''
   const currentPanel = props.data.currentPanel
   
   return (
